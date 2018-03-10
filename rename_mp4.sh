@@ -2,6 +2,7 @@
 
 # rename
 files=${*:-*.mp4}
+errcd=0
 for f in $files; do
   ext="${f##*.}"
   base=$(basename $f .$ext)
@@ -11,5 +12,8 @@ for f in $files; do
   [ "$dt" == "$(date "+%Y-%m-%d %H:%M:%S" -d "$dt" 2>/dev/null)" ] && continue
   echo -n renaming $f ..
   exiftool '-FileName<ContentCreateDate' -d %Y-%m-%d_%H%M%S_%%f.$ext $f
+  ret=$?
+  [[ $ret -gt $errcd ]] && errcd=$ret
 done
 
+exit $errcd

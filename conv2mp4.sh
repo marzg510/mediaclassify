@@ -21,9 +21,7 @@ for f in $files; do
   loglevel=warning
   ffmpeg -y -loglevel $loglevel -i "$f" $codec -metadata date="$dt" $of
   ret=$?
-  echo $ret
   [[ $ret -gt $errcd ]] && errcd=$ret
-#  [[ $ret -gt $errcode ]] && echo gt
 done
 
 exit $errcd

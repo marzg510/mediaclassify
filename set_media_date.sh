@@ -1,6 +1,7 @@
 #!/bin/bash
 
 files=${*:-*.mp4}
+errcd=0
 for f in $files; do
   ext="${f##*.}"
   # MediaCreateDateを持っていたらスキップ
@@ -27,5 +28,8 @@ for f in $files; do
   fi
   # MediaCreateDateを設定する
   exiftool -overwrite_original -MediaCreateDate="$dt" "$f"
+  ret=$?
+  [[ $ret -gt $errcd ]] && errcd=$ret
 done
 
+exit $errcd
