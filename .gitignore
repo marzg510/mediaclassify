@@ -1,4 +1,6 @@
 *.mp3
 *.csv
 *.ods
+tmp/
+backup/
 
