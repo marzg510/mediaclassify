@@ -1,12 +1,19 @@
 #!/bin/bash
 
-files=${*:-*.mp4}
+THIS_DIR=$(cd $(dirname $0);pwd)
+. ${THIS_DIR}/commons.sh
+
+# classify mp4
+indir=${1:-./tmp}
+outdir=${2:-./tmp}
 errcd=0
-for f in $files; do
+find $indir -type f -iname "*.mp4" | while read f; do
   echo -n classifing $f .. 
-  exiftool '-Directory < ContentCreateDate' -d %Y/%Y-%m $f
+  dt_item=$(get_valid_date_item $f)
+  exiftool "-Directory < $dt_item" -d $outdir/%Y/%Y-%m $f
   ret=$?
   [[ $ret -gt $errcd ]] && errcd=$ret
 done
 
 exit $errcd
+

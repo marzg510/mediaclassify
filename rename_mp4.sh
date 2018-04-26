@@ -1,17 +1,20 @@
 #!/bin/bash
 
-# rename
-files=${*:-*.mp4}
+THIS_DIR=$(cd $(dirname $0);pwd)
+. ${THIS_DIR}/commons.sh
+
+# rename mp4
+indir=${1:-./tmp}
 errcd=0
-for f in $files; do
+find $indir -type f -iname "*.mp4" | while read f; do
   ext="${f##*.}"
-  base=$(basename $f .$ext)
+#  base=$(basename $f .$ext)
   # ファイル名が日付で始まるものは、何もしない
-  fdt=${base:0:17}
-  dt="${fdt:0:10} ${fdt:11:2}:${fdt:13:2}:${fdt:15:2}"
-  [ "$dt" == "$(date "+%Y-%m-%d %H:%M:%S" -d "$dt" 2>/dev/null)" ] && continue
-  echo -n renaming $f ..
-  exiftool '-FileName<ContentCreateDate' -d %Y-%m-%d_%H%M%S_%%f.$ext $f
+  $(is_filename_date $f) && continue
+  # 日付取得項目の決定
+  dt_item=$(get_valid_date_item $f)
+  echo -n renaming $f by $dt_item ..
+  exiftool "-FileName<$dt_item" -d %Y-%m-%d_%H%M%S_%%f.$ext $f
   ret=$?
   [[ $ret -gt $errcd ]] && errcd=$ret
 done
