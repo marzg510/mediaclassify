@@ -16,8 +16,8 @@ find $indir -type f -iname "*.jpg" | while read f; do
   # 日付取得項目の決定
   dt_item=$(get_valid_date_item $f)
   # ファイル名変更
-  echo -n renaming $f ..
-  exiftool "-FileName < $dt_item" -d %Y-%m-%d_%H%M%S.$ext $f
+  echo -n renaming $f by $dt_item ..
+  exiftool "-FileName < $dt_item" -d %Y-%m-%d_%H%M%S%%-c.%%e $f
 #  echo exiftool '-FileName < CreateDate' -d %Y-%m-%d_%H%M%S.$ext $f
 #  exiftool -$dt_item $f
   ret=$?
