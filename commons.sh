@@ -10,7 +10,7 @@ function is_valid_exif_date() {
   in_f=$2
   exif_dt=$(exiftool -$dt_item "$in_f")
 #  echo exif_dt=$exif_dt >&2
-  dt=$(echo $exif_dt | sed -r 's/[^:]*: //' | awk '{gsub(":","-",$1);print $1,$2}')
+  dt=$(echo $exif_dt | sed -r 's/[^:]*: //' | awk '{gsub(":","-",$1);print $1,$2}' | sed -r 's/\+.*$//')
   validation_dt=$(date "+%Y-%m-%d %H:%M:%S" -d "$dt" 2>/dev/null)
 #  echo dt=$dt >&2
 #  echo vdt=$validation_dt >&2
