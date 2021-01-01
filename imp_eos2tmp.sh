@@ -4,7 +4,7 @@ THIS_DIR=$(cd $(dirname $0);pwd)
 . ${THIS_DIR}/commons.sh
 
 FROM_DIR=/media/masaru/EOS_DIGITAL/DCIM/
-TO_DIR=/tmp/eos`date +%Y%m%d_%H%M%S`
+TO_DIR=${1:-/tmp/eos`date +%Y%m%d_%H%M%S`}
 
 
 # copy to tmp
